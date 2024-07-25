@@ -71,7 +71,7 @@ def total_and_average_sales_by_store(
 
 
 @router.get("/total-and-average-sales/by-product/{product_id}")
-def total_and_average_sales_by_store(
+def total_and_average_sales_by_product(
     product_id: str,
     start_date: date = Query(..., description="Start date of the period"),
     end_date: date = Query(..., description="End date of the period"),
@@ -80,6 +80,21 @@ def total_and_average_sales_by_store(
     sales_controller = SalesController(datamart)
     params = SalesQueryParams(start_date=start_date, end_date=end_date, key_value=product_id)
     data = sales_controller.get_sales_average_by_key_product(params)
+    if data:
+        return data
+    return HTTPException(status_code=404, detail='Item not found')
+
+
+@router.get("/total-and-average-sales/by-employee/{employee_id}")
+def total_and_average_sales_by_employee(
+    employee_id: str,
+    start_date: date = Query(..., description="Start date of the period"),
+    end_date: date = Query(..., description="End date of the period"),
+    datamart: DatamartController = Depends(get_datamart_controller)
+):
+    sales_controller = SalesController(datamart)
+    params = SalesQueryParams(start_date=start_date, end_date=end_date, key_value=employee_id)
+    data = sales_controller.get_sales_average_by_key_employee(params)
     if data:
         return data
     return HTTPException(status_code=404, detail='Item not found')
