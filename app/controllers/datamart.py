@@ -15,12 +15,12 @@ class DatamartController:
         data =[]
         if not os.path.exists(self.data_directory):
             return pd.DataFrame()
-        else:
-            for filename in os.listdir(self.data_directory):
-                if filename.endswith('.parquet'):
-                    file_path = os.path.join(self.data_directory, filename)
-                    df = pd.read_parquet(file_path)
-                    data.append(df)
-            return pd.concat(data, ignore_index=True)
+
+        for filename in os.listdir(self.data_directory):
+            if filename.endswith('.parquet'):
+                file_path = os.path.join(self.data_directory, filename)
+                df = pd.read_parquet(file_path)
+                data.append(df)
+        return pd.concat(data, ignore_index=True)
 
 
