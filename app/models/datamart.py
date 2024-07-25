@@ -20,19 +20,5 @@ class DatamartModel:
                     df = pd.read_parquet(file_path)
                     data_temporal.append(df)
             return pd.concat(data_temporal, ignore_index=True)
-        except Exception as e:
-            raise Exception(f"Error loading data: {str(e)}")
-
-    def get_summary(self):
-        try:
-            return self.dataframe.describe()
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error generating summary: {str(e)}")
-
-    def get_data_sample(self, num_rows: int = 5):
-        try:
-            return self.dataframe.head(num_rows).to_dict(orient='records')
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error retrieving data sample: {str(e)}")
-
-
+        except:
+            return pd.DataFrame()
