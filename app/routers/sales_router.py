@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, Query
 
+from app.controllers.datamart import DatamartController
 from app.controllers.sales import SalesController
-from app.dependencies.dependencies import get_datamart_model
-from app.models.datamart import DatamartModel
+from app.dependencies.dependencies import get_datamart_controller
+
 from app.schemas.sales_query_params import SalesQueryParams
 from datetime import date
 
@@ -14,7 +15,7 @@ def sales_by_employee(
     employee_id: str,
     start_date: date = Query(..., description="Start date of the period"),
     end_date: date = Query(..., description="End date of the period"),
-    datamart: DatamartModel = Depends(get_datamart_model)
+    datamart: DatamartController = Depends(get_datamart_controller)
 ):
     sales_controller = SalesController(datamart)
     params = SalesQueryParams(start_date=start_date, end_date=end_date, key_value=employee_id)
@@ -25,7 +26,7 @@ def sales_by_product(
     product_id: str,
     start_date: date = Query(..., description="Start date of the period"),
     end_date: date = Query(..., description="End date of the period"),
-    datamart: DatamartModel = Depends(get_datamart_model)
+    datamart: DatamartController = Depends(get_datamart_controller)
 ):
     sales_controller = SalesController(datamart)
     params = SalesQueryParams(start_date=start_date, end_date=end_date, key_value=product_id)

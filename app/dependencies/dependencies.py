@@ -1,5 +1,5 @@
-from app.models.datamart import DatamartModel
+from app.controllers.datamart import DatamartController
 
 
-def get_datamart_model():
-    return DatamartModel()
+def get_datamart_controller():
+    return DatamartController()
