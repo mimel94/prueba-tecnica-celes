@@ -1,0 +1,8 @@
+pydantic==2.8.2
+starlette==0.37.2
+uvicorn==0.30.3
+fastapi==0.111.1
+PyJWT==2.8.0
+pandas==2.2.2
+pyarrow==17.0.0
+fastparquet==2024.5.0
