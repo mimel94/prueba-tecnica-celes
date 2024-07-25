@@ -4,16 +4,15 @@ from starlette import status
 
 from app.controllers.user import UserController
 from app.schemas.user import Token
-from app.utils.token_generator import TokenGenerator
-from settings.base import FAKE_USER_DB
+
 
 router = APIRouter()
 
 
-@router.post("/token", response_model=Token)
+@router.post("/login", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = UserController.authenticate(db=FAKE_USER_DB,
-                                       username=form_data.username,
+
+    user = UserController().authenticate(username=form_data.username,
                                        password=form_data.password)
     if not user:
         raise HTTPException(
@@ -21,6 +20,5 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = TokenGenerator.generate_token({"username": user.username})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": user.token, "token_type": "bearer"}
 

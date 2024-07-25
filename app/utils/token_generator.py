@@ -3,6 +3,8 @@ from datetime import datetime
 
 import jwt
 
+from settings.base import SECRET_KEY
+
 
 class TokenGenerator:
 
@@ -12,7 +14,7 @@ class TokenGenerator:
             'username': username,
             'exp': token_expired.timestamp()
         }
-        return jwt.encode(payload, algorithm='HS256')
+        return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
     @staticmethod
     def decode_token(token: str) -> dict:

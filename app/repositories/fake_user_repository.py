@@ -8,6 +8,7 @@ class FakeUserRepository(UserRepository):
 
     def __init__(self):
         self.users: List[User] = []
+        self.users.append(User(username='miller94', password='12345', first_name='Miller', last_name='Garcia'))
 
     def create(self, user: User) -> None:
         self.users.append(user)

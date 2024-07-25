@@ -1,20 +1,25 @@
-from app.schemas.user import UserInDB
-from settings.base import pwd_context
+from datetime import datetime, timedelta
+
+from app.repositories.fake_user_repository import FakeUserRepository
+from app.utils.token_generator import TokenGenerator
 
 
 class UserController:
 
-    @staticmethod
-    def get(db, username: str):
-        if username in db:
-            user_dict = db[username]
-            return UserInDB(**user_dict)
+    def __init__(self):
+        self.repository = FakeUserRepository()
+        self.token_generator = TokenGenerator()
 
-    @classmethod
-    def authenticate(cls, db, username: str, password: str):
-        user = cls.get(db, username)
+    def authenticate(self, username: str, password: str):
+        user = self.repository.get_by_username(username)
+
         if not user:
             return False
-        if not pwd_context.verify(password, user.hashed_password):
+
+        if password != user.password:
             return False
+
+        user.token_expired = datetime.now() + timedelta(hours=6)
+        user.token = self.token_generator.generate_token(user.username, user.token_expired)
+        self.repository.update(user)
         return user
