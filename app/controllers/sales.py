@@ -63,3 +63,6 @@ class SalesController:
     
     def get_sales_average_by_key_store(self, params: SalesQueryParams) -> Optional[SalesAverageModel]:
         return self.get_sales_average_by_key('KeyStore', 'Stores', 'StoreName', params)
+
+    def get_sales_average_by_key_product(self, params: SalesQueryParams) -> Optional[SalesAverageModel]:
+        return self.get_sales_average_by_key('KeyProduct', 'Products', 'ProductName', params)
