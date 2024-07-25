@@ -38,3 +38,17 @@ def sales_by_product(
         return data
     return HTTPException(status_code=404, detail='Item not found')
 
+@router.get("/sales/by-store/{store_id}")
+def sales_by_store(
+    store_id: str,
+    start_date: date = Query(..., description="Start date of the period"),
+    end_date: date = Query(..., description="End date of the period"),
+    datamart: DatamartController = Depends(get_datamart_controller)
+):
+    sales_controller = SalesController(datamart)
+    params = SalesQueryParams(start_date=start_date, end_date=end_date, key_value=store_id)
+    data = sales_controller.get_sales_by_key_store(params)
+    if data:
+        return data
+    return HTTPException(status_code=404, detail='Item not found')
+
