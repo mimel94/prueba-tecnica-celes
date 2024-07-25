@@ -8,3 +8,12 @@ class SalesModel:
     name: str
     start_date: date
     end_date: date
+
+
+@dataclass
+class SalesAverageModel:
+    total: int
+    average: float
+    name: str
+    start_date: date
+    end_date: date
