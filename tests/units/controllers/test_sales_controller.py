@@ -28,7 +28,6 @@ class TestSalesController:
                                                                                      key_value='1|564'))
         assert response is None
 
-
     def test_given_valid_sales_params_when_query_sales_by_store_then_return_correct_sales_data(self, mocker,
                                                                                                data_fixture_store):
         mocker.patch.object(DatamartController, 'load_data', return_value=data_fixture_store)
@@ -41,7 +40,6 @@ class TestSalesController:
         assert response.end_date == date(2024,1,31)
         assert response.name == 'UNICO BQLLA'
 
-
     def test_given_invalid_sales_params_when_query_sales_by_store_then_return_correct_sales_data(self, mocker,
                                                                                                data_fixture_store):
         mocker.patch.object(DatamartController, 'load_data', return_value=data_fixture_store)
@@ -49,4 +47,26 @@ class TestSalesController:
         response = data_controller.get_sales_by_key_store(params=SalesQueryParams(start_date=date(2023, 11, 1),
                                                                           end_date=date(2024, 1, 31),
                                                                           key_value='1|021'))
+        assert response is None
+
+
+    def test_given_valid_sales_params_when_query_sales_by_product_then_return_correct_sales_data(self, mocker,
+                                                                                               data_fixture_product):
+        mocker.patch.object(DatamartController, 'load_data', return_value=data_fixture_product)
+        data_controller = SalesController(datamart_model=DatamartController())
+        response = data_controller.get_sales_by_key_product(params=SalesQueryParams(start_date=date(2023, 11, 1),
+                                                                          end_date=date(2024, 1, 31),
+                                                                          key_value='1|44733'))
+        assert response.total_sales == 3
+        assert response.start_date == date(2023,11,1)
+        assert response.end_date == date(2024,1,31)
+        assert response.name == 'BICARBONATO DE AMONIO (SCO X 25 KLS)'
+
+    def test_given_invalid_sales_params_when_query_sales_by_product_then_return_correct_sales_data(self, mocker,
+                                                                                               data_fixture_product):
+        mocker.patch.object(DatamartController, 'load_data', return_value=data_fixture_product)
+        data_controller = SalesController(datamart_model=DatamartController())
+        response = data_controller.get_sales_by_key_product(params=SalesQueryParams(start_date=date(2023, 11, 1),
+                                                                          end_date=date(2024, 1, 31),
+                                                                          key_value='1|4473'))
         assert response is None
