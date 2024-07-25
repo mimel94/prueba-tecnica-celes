@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 
 from app.controllers.datamart import DatamartController
 from app.controllers.sales import SalesController
@@ -19,7 +19,10 @@ def sales_by_employee(
 ):
     sales_controller = SalesController(datamart)
     params = SalesQueryParams(start_date=start_date, end_date=end_date, key_value=employee_id)
-    return sales_controller.get_sales_by_key_employee(params)
+    data = sales_controller.get_sales_by_key_employee(params)
+    if data:
+        return data
+    return HTTPException(status_code=404, detail='Item not found')
 
 @router.get("/sales/by-product/{product_id}")
 def sales_by_product(
@@ -30,4 +33,8 @@ def sales_by_product(
 ):
     sales_controller = SalesController(datamart)
     params = SalesQueryParams(start_date=start_date, end_date=end_date, key_value=product_id)
-    return sales_controller.get_sales_by_key_product(params)
+    data = sales_controller.get_sales_by_key_product(params)
+    if data:
+        return data
+    return HTTPException(status_code=404, detail='Item not found')
+
