@@ -19,7 +19,7 @@ class TokenGenerator:
     @staticmethod
     def decode_token(token: str) -> dict:
         try:
-            return jwt.decode(token, algorithms=['HS256'])
+            return jwt.decode(token,SECRET_KEY, algorithms=['HS256'])
         except jwt.ExpiredSignatureError as e:
             raise jwt.ExpiredSignatureError(e)
         except jwt.InvalidTokenError as e:
