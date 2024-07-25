@@ -19,15 +19,15 @@ class SalesController:
             ]
         if filtered_data.empty:
             return None
-        else:
-            total_sales = filtered_data.count()
-            sales = SalesModel(
-                total_sales=int(total_sales['KeySale']),
-                Name=filtered_data.iloc[0][data_key][data_name],
-                start_date=params.start_date,
-                end_date=params.end_date
-            )
-            return sales
+
+        total_sales = filtered_data.count()
+        sales = SalesModel(
+            total_sales=int(total_sales['KeySale']),
+            name=filtered_data.iloc[0][data_key][data_name],
+            start_date=params.start_date,
+            end_date=params.end_date
+        )
+        return sales
 
     def get_sales_by_key_employee(self, params: SalesQueryParams) -> Optional[SalesModel]:
         return self.get_sales_by_key('KeyEmployee', 'Employees','EmployeeName', params)

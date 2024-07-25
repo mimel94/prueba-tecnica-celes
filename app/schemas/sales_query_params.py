@@ -8,7 +8,7 @@ class SalesQueryParams(BaseModel):
     key_value: str
 
     @validator('end_date')
-    def check_dates(cls, v, values, **kwargs):
-        if 'start_date' in values and v < values['start_date']:
+    def check_dates(cls, value, values, **kwargs):
+        if 'start_date' in values and value < values['start_date']:
             raise ValueError('end_date must be after start_date')
-        return v
+        return value
