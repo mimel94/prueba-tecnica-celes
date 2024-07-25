@@ -19,6 +19,7 @@ class SalesController:
             ]
         if filtered_data.empty:
             return None
+        filtered_data.to_json('store.json')
 
         total_sales = filtered_data.count()
         sales = SalesModel(
